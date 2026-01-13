@@ -41,8 +41,6 @@ int picoshell(char **cmds[])
 	int     fd[2];
 	int     old_fd = -1;
 	pid_t child;
-    int code = 0;
-    int last_code = 0;
 
 	i = 0;
 	while (cmds[i])
@@ -52,28 +50,17 @@ int picoshell(char **cmds[])
 		child = fork();
 		if (child == 0)
 		{
-			if (old_fd != -1) // si pas premiere commande
-            {
+			if (old_fd != -1) // si premiere commande
 				dup2(old_fd, STDIN_FILENO);
-                close(old_fd);
-            } 
-              //si pas la derniere commande
-			if (cmds[i +1])
-            {
-                close(fd[0]);
+			if (cmds[i +1]) //si pas la derniere commande
 				dup2(fd[1], STDOUT_FILENO);
-                close(fd[1]);
-            }
 			//ferme tous fd du Child
-			if (execvp(cmds[i][0], cmds[i]) == - 1)
-                exit (1);
-			exit (0);
+			close(old_fd);
+			close(fd[0]);
+			close(fd[1]);
+			execvp(cmds[i][0], cmds[i]);
+			exit (1);
 		}
-        wait(&code);
-        if(code != 0)
-        {
-            last_code = 1;
-        }
 		// ferme les fd parent
 		if (old_fd != -1)
 			close(old_fd);
@@ -82,9 +69,9 @@ int picoshell(char **cmds[])
 			close(fd[1]);
 			old_fd = fd[0];
 		}
-        i++;
+		i++;
 	}
-    return (last_code);
+	return (0);
 }
 
 // int main()
@@ -93,11 +80,10 @@ int picoshell(char **cmds[])
 // 	 char *cmds1[] = {"/bin/ls", NULL};
 // 	 char *cmds2[] = {"/usr/bin/grep", "picoshell", NULL};
 //      char *cmds3[] = {"cat", "-e",NULL};
-//      char *error[] = {"./youpi",NULL};
 // 	// char *cmds3[] = {"wc","-c", NULL};
 // 	// char *cmds4[] = {"cat", NULL};
 // 	// char *cmds5[] = {"pwd", NULL};
-// 	char **cmds[] = {cmds0, cmds1, cmds2, cmds3, error, NULL};
+// 	char **cmds[] = {cmds0, cmds1, cmds2, cmds3, NULL};
 
-// 	return(picoshell(cmds));
+// 	picoshell(cmds);
 // }
