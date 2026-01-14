@@ -36,7 +36,7 @@ int sandbox(void (*f)(void), unsigned int timeout, bool verbose)
     }
    // child_pid = pid;
     alarm(timeout);
-    if(waitpid(pid, &status, 0) == -1)
+    if(waitpid(pid, &status, 0) == -1) // ERROR DE WAITPID
     {
         if(errno == EINTR)
         {
