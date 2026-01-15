@@ -51,9 +51,7 @@
 #include <stdlib.h> // change this to <stdlib.h>
 #include <ctype.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
+
 
 
 typedef struct node {
@@ -67,6 +65,7 @@ typedef struct node {
     struct node *r;
 }   node;
 
+int eval_tree(node *tree);
 node *parse_expr(char **s);
 
 node *new_node(node n) {
@@ -155,27 +154,6 @@ node *parse_expr(char **s) {
     return left;
 }
 
-int eval_tree(node *tree) {
-    switch (tree->type) {
-        case ADD:
-            return (eval_tree(tree->l) + eval_tree(tree->r));
-        case MULTI:
-            return (eval_tree(tree->l) * eval_tree(tree->r));
-        case VAL:
-            return (tree->val);
-    }
-    return 0;
-}
-
-void print_tree(node*n)
-{
-    while(n)
-    {
-        printf("%d %d\n",n->type,n->val);
-        n = n->r;
-    }
-}
-
 int main(int argc, char **argv) {
     if (argc != 2) {
         return 1;
@@ -194,5 +172,17 @@ int main(int argc, char **argv) {
     print_tree(tree);
     printf("%d\n", eval_tree(tree));
     destroy_tree(tree);
+    return 0;
+}
+
+int eval_tree(node *tree) {
+    switch (tree->type) {
+        case ADD:
+        return (eval_tree(tree->l) + eval_tree(tree->r));
+        case MULTI:
+        return (eval_tree(tree->l) * eval_tree(tree->r));
+        case VAL:
+        return (tree->val);
+    }
     return 0;
 }
