@@ -6,7 +6,7 @@
 /*   By: vanfossi <vanfossi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 00:18:42 by vanfossi          #+#    #+#             */
-/*   Updated: 2026/01/18 08:37:49 by vanfossi         ###   ########.fr       */
+/*   Updated: 2026/01/18 12:18:48 by vanfossi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int check_string(char *s)
         else if(!isdigit(s[i]) && s[i] != '+' && s[i] != '*' && s[i] != '(' && s[i] != ')')
             return (unexpected(s[i]),1);
         if(isdigit(s[i]) && isdigit(s[i+1]))
-            return (unexpected(s[i]),1);
+            return (unexpected(s[i+1]),1);
         i ++;
     }
     if(par > 0) //Si parentheses non fermes
-        return (unexpected(')'),1);
-    else if(par < 0) //Si parentheses non ouvertes
         return (unexpected('('),1);
-    if(s[strlen(s)] == '+' || s[strlen(s)] == '*') //Si le dernier char est un +/*
+    else if(par < 0) //Si parentheses non ouvertes
+        return (unexpected(')'),1);
+    if(s[strlen(s)-1] == '+' || s[strlen(s)-1] == '*') //Si le dernier char est un +/*
         return (unexpected(0),1);
     return (0);
 }

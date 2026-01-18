@@ -5,7 +5,7 @@ GREEN="$(tput setaf 2)$(tput bold)"
 YELLOW="$(tput setaf 3)$(tput bold)"
 RESET="$(tput sgr0)"
 
-REF="vbc.c"
+REF="../../02/vbc/vbc.c"
 USR="vbc.c"
 
 # Check for vbc.h in rendu/vbc
